@@ -21,7 +21,7 @@
 
 \documentclass{cctart}
 
-
+\usepackage{multirow}
 \usepackage{amssymb}
 
 \usepackage{fancyhdr} % Required for custom headers
@@ -264,7 +264,44 @@ QED.
 
 \begin{homeworkProblem}
 Compare naive matrix multiplication and the Strassen's algorithm.
+
 \problemAnswer{
+Both implemented in an recursive way in C++. To be compiled with Visual Studio 2012.
+
+For code and run-time screenshots, please refer to the attachments.
+
+Results\footnote{on an Intel Core i5 4120U Processor, 4GB DDR3 Memory, Windows 10 Pro} are as follows:
+
+
+\begin{center}
+
+CPU Time Consumed (microseconds)
+
+
+\begin{tabular}{rrr}
+\hline
+Size of matrix& Naive& Strassen's\\
+\hline
+1& 0& 0\\
+2& 0& 100\\
+4& 200& 300\\
+8& 1500& 2000\\
+16& 9600& 16100\\
+32& 69600& 88500\\
+64& 609200& 643500\\
+128& 4418300& 4537000\\
+256& 35934400& 30109700\\
+\hline
+\end{tabular}
+\end{center}
+Seems that the cross-over point is somewhere between 128 and 256.
+
+A double-logarithmic chart visualizing the data above:
+\begin{center}
+\includegraphics[width=0.75\columnwidth]{chart} 
+\end{center}
+
+Perfect linearity, verifying polynomial complexity. 
 
 }
 
