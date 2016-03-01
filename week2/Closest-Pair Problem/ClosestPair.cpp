@@ -28,4 +28,3 @@ Result distance(const Point& x, const Point& y){
 std::ostream& operator<<(std::ostream& os, Result& r){
 	return os << r.a << ", " << r.b << ": " << std::sqrt(r.d) << endl;
 }
-

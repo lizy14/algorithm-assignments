@@ -16,7 +16,7 @@ class DivideAndConquer
 public:
 	DivideAndConquer(void);
 	~DivideAndConquer(void);
-	Result solve(Points& p);
+	Result solve(Points p);
 	Result recursive(Points&, Boundary);
 };
 

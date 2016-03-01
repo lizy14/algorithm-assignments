@@ -1,7 +1,7 @@
 #include "DivideAndConquer.h"
 
 
-Result DivideAndConquer::solve(Points& p){
+Result DivideAndConquer::solve(Points p){
 	
 	//sort by x coordinate
 	std::sort(p.begin(), p.end(), [](Point a, Point b){
@@ -28,9 +28,9 @@ Result DivideAndConquer::recursive(Points& p, Boundary b){
 		Result r = distance(p[b.l], p[b.l + 1]);
 		Result _;
 		_ = distance(p[b.l], p[b.l + 2]);
-		_ = _<r? _: r;
+		r = _<r? _: r;
 		_ = distance(p[b.l + 1], p[b.l + 2]);
-		_ = _<r? _: r;
+		r = _<r? _: r;
 		return r;
 	}
 
@@ -65,7 +65,7 @@ Result DivideAndConquer::recursive(Points& p, Boundary b){
 			break;
 
 	Points neighbor; //points in neighborhood of mid-line
-	for(int i=l; i<r; i++)
+	for(int i=l; i<=r; i++)
 		neighbor.push_back(p[i]);
 
 	//sort by y coordinate
