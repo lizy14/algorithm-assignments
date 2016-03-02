@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Closest-Pair Problem", "Closest-Pair Problem.vcxproj", "{8CA94E2D-1C15-4766-AF04-FBE8448ED12C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Closest-Pair Problem", "Closest-Pair Problem\Closest-Pair Problem.vcxproj", "{8CA94E2D-1C15-4766-AF04-FBE8448ED12C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "..\Gui\Gui.csproj", "{BB3A018C-773C-436B-98F0-A21BA9B41E03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Gui\Gui.csproj", "{BB3A018C-773C-436B-98F0-A21BA9B41E03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,8 +38,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
