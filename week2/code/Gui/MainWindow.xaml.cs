@@ -50,10 +50,8 @@ namespace Gui
         
         [DllImport("Library.dll")]
         static extern void addPoint(int x, int y);
-
         [DllImport("Library.dll")]
         static extern int getA();
-
         [DllImport("Library.dll")]
         static extern int getB();
 
@@ -84,7 +82,8 @@ namespace Gui
 
             canv.Children.Add(el);
 
-            if (a!=0 && b !=0)
+            
+            if (a != 0 && b != 0)
             {
                 _l.X1 = ((Point)(points[a - 1])).X;
                 _l.Y1 = ((Point)(points[a - 1])).Y;
@@ -94,6 +93,6 @@ namespace Gui
 
                 canv.Children[0] = _l;
             }
-        }
+       }
     }
 }

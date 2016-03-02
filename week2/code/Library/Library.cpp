@@ -12,7 +12,7 @@ void LIBRARY_API __stdcall addPoint(int x, int y){
 	id++;
 	Point _ = {id, x, y};
 	points.push_back(_);
-	if(id >= 3)
+	if(id >= 2)
 		result = dc.solve(points);
 }
 

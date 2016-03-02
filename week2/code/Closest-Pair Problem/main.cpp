@@ -5,7 +5,21 @@
 
 void correctness();
 void timing();
-void pressure(){
+void stress();
+
+int main(){
+	
+
+	//stress();    //一百万
+	//correctness(); //检查正确性
+	timing();      //比较两种方案用时
+
+
+	return system("pause");
+}
+
+
+void stress(){
 	Timing timer;
 	timer.start();
 	Result r = DivideAndConquer().solve(createProblem(1e6));
@@ -13,12 +27,7 @@ void pressure(){
 	timer.end();
 	timer.reportCPUtime();
 }
-int main(){
-	//pressure();    //一百万
-	//correctness(); //检查正确性
-	timing();      //比较两种方案用时
-	return system("pause");
-}
+
 
 void correctness(){
 
@@ -54,7 +63,7 @@ for(; PROBLEM_SIZE < 1e8; PROBLEM_SIZE *= 2){
 void timing(){
 	int TIMES;
 	int problemSize = 2;
-for(; problemSize>0; problemSize*=2){
+for(; problemSize<2e6; problemSize*=2){
 	if(problemSize < 10)
 		TIMES = 100000;
 	else if(problemSize < 1000)
@@ -79,15 +88,19 @@ for(; problemSize>0; problemSize*=2){
 		r = DivideAndConquer().solve(problem);
 	}
 	timer.end();
-	cout << problemSize << '\t' << timer.getCPUtime() << '\t';
+	cout << problemSize << '\t' << timer.getCPUtime();
 
+	static bool flag = false;
+	
 	timer.start();
 	for(int i=0; i<TIMES; i++){
 		problem = createProblem(problemSize);
 		r = BruteForce().solve(problem);
 	}
 	timer.end();
-	cout << timer.getCPUtime() << '\n';
+	cout << '\t' << timer.getCPUtime();
+
+	cout << '\n';
 }
 }
 
