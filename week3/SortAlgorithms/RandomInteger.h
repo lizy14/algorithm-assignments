@@ -1,10 +1,8 @@
 /*
 
-随机数发生器
+随机大整数发生器，指定 bit 数
 
-range [0, 2^32)
-
-MSVC++ 11.0
+支持不同编译器，不同的 RAND_MAX 和 sizeof(unsigned)
 
 By Zhaoyang, March 2016
 */
@@ -17,6 +15,8 @@ By Zhaoyang, March 2016
 
 class RandomInteger{
 public:
-	RandomInteger();
-	unsigned int get();
+	int _size;
+	int _randSize;
+	RandomInteger(int); //number of bits
+	unsigned get();
 };

@@ -1,17 +1,33 @@
 #include "RandomInteger.h"
 
-RandomInteger::RandomInteger(){
-	assert(sizeof(unsigned int)==4); /*hard coded*/
-	assert(RAND_MAX == 32767); /*hard coded*/
+RandomInteger::RandomInteger(int size):_size(size),_randSize(0){
+	assert((sizeof(unsigned)*8) >= _size);
+	
+	/*
+	RAND_MAX == 32767 -> 15
+	*/
+
+	unsigned _ = RAND_MAX;
+	
+	while(1){
+		if(_ & 1);else{
+			assert(_ == 0);
+			break;
+		}
+		
+		_randSize++;
+		_ >>= 1;
+	}
+	
 	std::srand(std::time(0));
 }
 
-unsigned int RandomInteger::get(){
-	unsigned int r = 0;
-	for(int i=0; i<3; i++){ /*hard coded*/
-		r <<= 15; /*hard coded*/
+unsigned RandomInteger::get(){
+	unsigned r = 0;
+	for(int i=0; i<_size; i+=_randSize){
+ 		r <<= _randSize; 
 		r += std::rand();
 	}
-	return r;
+	return r ;//% (1 << _size);
 }
  
