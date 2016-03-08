@@ -86,7 +86,10 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MergeSort.h" />
+    <ClInclude Include="QuickSort.h" />
     <ClInclude Include="RandomInteger.h" />
+    <ClInclude Include="SortAlgorithms.h" />
     <ClInclude Include="timing.h" />
   </ItemGroup>
   <ItemGroup>

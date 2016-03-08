@@ -3,82 +3,96 @@ Algorithms Assignment #3,
 By Zhaoyang, March 2016
 */
 
-#include "RandomInteger.h"
+
 #include "timing.h"
 
 #include <iostream>
-#include <vector>
 #include <cstdlib>
+
 using namespace std;
 
-#define LENGTH (15) // 15, 30, 32
-
+#define LENGTH (32) // 15, 30, 32
 #define MAX ((((unsigned long long)1)<<(LENGTH))-1)
 
-class Vector : public vector<unsigned>{
-public:
-	void randomize(int size){
-		RandomInteger r(LENGTH);
-		resize(0);
-		for(int i=0; i<size; i++){
-			push_back(r.get());
-		}
-	}
-	int lg(unsigned x){
-		/*
-		  0 -> 0
-		  1 -> 0
-		  2 -> 1
-		  3 -> 1
-		  4 -> 2
-		255 -> 7
-		256 -> 8
-		257 -> 8
-		*/
-		int r=0;
-		while(x>>=1){
-			r++;
-		}
-		return r;
-	}
-	void radixSort(){
-		int r = lg(size());
-		int b = LENGTH;
-
-	}
-	void countSort(){
-		vector<unsigned int> v(MAX+1, 0); //counter
-		for(auto& i : *this){
-			v[i]++;
-		}
-		for(int i=1; i<=MAX; i++){
-			v[i] += v[i-1];
-		}
-		Vector result;
-		result.resize(size());
-
-		for(int i=size()-1; i>=0; i--){
-			result[v[operator[](i)]-1] = operator[](i);
-			v[operator[](i)]--;
-		}
-		*this = result;
-	}
-};
-
-ostream& operator<<(ostream& os, Vector& v){
-	for(auto& i : v){
-		os << i << endl;
-	}
-	return os << endl;
-}
+#include "SortAlgorithms.h"
 
 int main(){
 	Timing timer;
 	Vector v;
-	v.randomize(200);
-	cout << v;
-	v.countSort();
-	cout << v;
+	v.randomize(10);
+	cout <<v << endl;
+	v.radixSort();
+	cout << v << endl;
+	
+
+	int sizes[] = {10,1e2,1e3,1e4,1e5,1e6,1e7,1e8,2e8};
+	cout << "size\tinsertion\tmerge\tquick\tradix\n";
+	for(auto size : sizes){
+		cout << size << '\t';
+		int totalTime, times;
+		
+		totalTime = 0, times = 0;
+		while(0){
+			v.randomize(size);
+			timer.start();
+			v.insertionSort();
+			timer.end();
+			times += 1;
+			totalTime += timer.getCPUtime();
+			if(totalTime > 1e5){
+				cout << totalTime/(times+0.) << '\t';
+				break;
+			}
+		}
+
+
+		totalTime = 0, times = 0;
+		while(1){
+			v.randomize(size);
+			timer.start();
+			v.mergeSort();
+			timer.end();
+			times += 1;
+			totalTime += timer.getCPUtime();
+			if(totalTime > 1e5){
+				cout << totalTime/(times+0.) << '\t';
+				break;
+			}
+		}
+
+		totalTime = 0, times = 0;
+		while(1){
+			v.randomize(size);
+			timer.start();
+			v.quickSort();
+			timer.end();
+			times += 1;
+			totalTime += timer.getCPUtime();
+			if(totalTime > 1e5){
+				cout << totalTime/(times+0.) << '\t';
+				break;
+			}
+		}
+
+
+		totalTime = 0, times = 0;
+		while(1){
+			v.randomize(size);
+			timer.start();
+			v.radixSort();
+			timer.end();
+			times += 1;
+			totalTime += timer.getCPUtime();
+			if(totalTime > 1e5){
+				cout << totalTime/(times+0.) << '\t';
+				break;
+			}
+		}
+
+		cout << '\n';
+	}
 
 	return system("pause");
 }
+
+
