@@ -1,0 +1,88 @@
+\input{header.tex}
+
+\newcommand{\hmwkTitle}{Assignment\ \#3} % Assignment title
+\newcommand{\hmwkDueDate}{March\ 20,\ 2016} % Due date
+\newcommand{\hmwkClass}{Algorithms} % Course/class
+\newcommand{\hmwkAuthorName}{Zhaoyang Li (2014013432)} % Your name
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+%\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+
+\newpage
+\tableofcontents
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+
+\begin{homeworkProblem}
+
+
+\problemAnswer{
+
+
+}
+\end{homeworkProblem}
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 2
+%----------------------------------------------------------------------------------------
+
+
+\begin{homeworkProblem}
+Compare insertion sort, quick sort, merge sort and radix sort on randomly generated 32-bit unsigned integers.\\ 
+
+\problemAnswer{
+Sorting algorithms are implemented in C++.
+
+Correctness are verified by checking consistency of the results of the four algorithms.
+
+Notes on generating large random integers: std::rand() gives 15-bit random integers, splicing three of which gives 32-bit random integers.
+
+\begin{center}
+
+CPU Time Consumed\footnote{Compilation: MSVC++ 11.0 x64 Release; runs on an Intel Core i5 4120U Processor, 4GB DDR3 Memory, Windows 10 Pro.} (microseconds)
+
+\begin{tabular}{rrrrr}
+\hline
+Size of problem& Insertion& Merge& Quick& Radix \\
+\hline
+ 10 & 0.0717057 & 0.347331 & 0.640546 & 1.64938 \\
+ 100 & 3.53864 & 2.32687 & 5.57795 & 9.32336 \\
+ 1000 & 179.396 & 71.1268 & 66.0131 & 84.4482 \\
+ 10000 & 16285.7 & 918.182 & 1052.08 & 863.248 \\
+ 100000 & 1.78e6 & 11222.2 & 11777.8 & 8500 \\
+ 1000000 & 1.71e8 & 143000 & 134000 & 83000 \\
+ 10000000 & \text{} & 1.62e6 & 1.5e6 & 834000 \\
+ 100000000 & \text{} & 1.92e7 & 1.67e7 & 8.85e6 \\
+ 200000000 & \text{} & 3.99e7 & 3.64e7 & 1.9e7 \\
+\hline
+\end{tabular}
+
+\end{center}
+A double-logarithmic chart visualizing the data above:
+\begin{center}
+\includegraphics[width=0.75\columnwidth]{chart}
+\end{center}
+
+It's clear that insertion sort has the greatest time complexity $\Theta(n^2)$, while radix sort has the least $\Theta(n)$.
+
+Quick sort and merge sort are in between, and are basically the same on random arrays. As size of the array grows, quick sort has the shorter running time.
+}
+\end{homeworkProblem}
+
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
