@@ -27,10 +27,41 @@
 
 \begin{homeworkProblem}
 
+CRLS Ex. 8.4-4.
 
 \problemAnswer{
+This problem is all about defining the buckets, to make sure the expected numbers of points in each buckets $n_i$ are the same.
 
+Choose $r_i$ such that $r_i = \sqrt{\frac{i}{n}}$, $i=0,1,2,...n$, meaning that
 
+$$\forall i, \pi r_i^2- \pi r_{i-1}^2= \pi \frac1n$$
+
+$p_j$ falls into bucket $i$, if and only if $r_{i-1} \leq d_j < r_i$, $i,j \in \{1, 2, ..., n\}$.
+
+It's obvious that the process of placing all the points into the buckets takes at most linear time.
+
+Define indicator random variables $X_{ij} = I\{p_j\ \mbox{falls in bucket}\ i\}$.
+
+Therefore, $n_i = \sum_{j=1}^n X_{ij}$. Applying geometric probability model, we have $E\left( x_{ij}\right) = \frac1n, E\left( x_{ij}x_{ik}\right) =\frac1{n^2}$.
+\[
+\begin{aligned}
+E\left( n_i^2 \right) 
+&= \sum_{j=1}^n E\left(X_{ij}^2\right) + \sum_{1\leq j \leq n} \sum_{1\leq k \leq n, k\neq j}E\left(X_{ij}X_{ik}\right) \\ 
+&= \sum_{j=1}^n \frac1n + \sum_{1\leq j \leq n} \sum_{1\leq k \leq n, k\neq j}\frac{1}{n^2} \\ 
+&= 2-\frac1n\\ 
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+E\left( T(n) \right) 
+&=\Theta(n)+\sum_{i=0}^{n-1}O\left(E\left(n_i^2\right)\right)  \\
+&=\Theta(n) + n\cdot O\left( 2-\frac1n \right) \\ 
+&=\Theta(n)\\
+\end{aligned}
+\]
+
+So the algorithm has a linear average running time.
 }
 \end{homeworkProblem}
 
@@ -42,14 +73,16 @@
 
 \begin{homeworkProblem}
 Compare insertion sort, quick sort, merge sort and radix sort on randomly generated 32-bit unsigned integers.\\
-  \\
+
 \problemAnswer{
 Sorting algorithms are implemented in C++.
 
-Correctness are verified by checking consistency of the results of the four algorithms.
+Correctness is verified by checking consistency of the results of the four algorithms.
 
 Notes on generating large random integers: std::rand() gives 15-bit random integers, splicing three of which gives 32-bit random integers.
 
+Execute \url{bin/SortAlgorithms.exe} to get a table like what is shown below.
+ \\
 \begin{center}
 
 CPU Time Consumed\footnote{Compilation: MSVC++ 11.0 x64 Release; runs on an Intel Core i5 4120U Processor, 4GB DDR3 Memory, Windows 10 Pro.} (microseconds)
@@ -78,7 +111,7 @@ A double-logarithmic chart visualizing the data above:
 
 It's clear that insertion sort has the greatest time complexity $\Theta(n^2)$, while radix sort has the least $\Theta(n)$.
 
-Quick sort and merge sort are in between, and are basically the same on random arrays. As size of the array grows, quick sort has the shorter running time.
+Quick sort and merge sort are in between, and are basically the same. As size of the array grows, quick sort has the shorter running time.
 }
 \end{homeworkProblem}
 
@@ -89,18 +122,19 @@ Quick sort and merge sort are in between, and are basically the same on random a
 
 \begin{homeworkProblem}
 Give an $O(n \lg n)$-time algorithm to find the longest monotonically increasing subsequence of a sequence of n numbers.
-  \\
+
 \problemAnswer{
 
-Combining dynamic programming and binary search techniques, gives $O(n \lg n)$ time complexity. 
+Combining dynamic programming and binary search techniques gives $O(n \lg n)$ time complexity.
 
-I have the algorithm implemented in C\#. Execute \url{bin/LongestIncreasingSubsequence.exe} to bring up a GUI. 
+The algorithm is implemented in C\#. Execute \url{bin/LongestIncreasingSubsequence.exe} to bring up a GUI.
 
 A run-time screenshot is shown below.
-
 \begin{center}
 \includegraphics[width=0.5\columnwidth]{screenshot}
 \end{center}
+
+Correctness is verified by checking results of test samples by hand. 
 }
 \end{homeworkProblem}
 
