@@ -41,8 +41,8 @@
 
 
 \begin{homeworkProblem}
-Compare insertion sort, quick sort, merge sort and radix sort on randomly generated 32-bit unsigned integers.\\ 
-
+Compare insertion sort, quick sort, merge sort and radix sort on randomly generated 32-bit unsigned integers.\\
+  \\
 \problemAnswer{
 Sorting algorithms are implemented in C++.
 
@@ -81,6 +81,29 @@ It's clear that insertion sort has the greatest time complexity $\Theta(n^2)$, w
 Quick sort and merge sort are in between, and are basically the same on random arrays. As size of the array grows, quick sort has the shorter running time.
 }
 \end{homeworkProblem}
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 3
+%----------------------------------------------------------------------------------------
+
+
+\begin{homeworkProblem}
+Give an $O(n \lg n)$-time algorithm to find the longest monotonically increasing subsequence of a sequence of n numbers.
+  \\
+\problemAnswer{
+
+Combining dynamic programming and binary search techniques, gives $O(n \lg n)$ time complexity. 
+
+I have the algorithm implemented in C\#. Execute \url{bin/LongestIncreasingSubsequence.exe} to bring up a GUI. 
+
+A run-time screenshot is shown below.
+
+\begin{center}
+\includegraphics[width=0.5\columnwidth]{screenshot}
+\end{center}
+}
+\end{homeworkProblem}
+
 
 
 %----------------------------------------------------------------------------------------
