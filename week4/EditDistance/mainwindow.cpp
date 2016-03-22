@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     model = nullptr;
-
+    autoUpdate = true;
+    update();
 }
 
 MainWindow::~MainWindow()
@@ -15,9 +16,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
 
+void MainWindow::update(){
     //input
     string a = ui->_a->text().toStdString();
     string b = ui->_b->text().toStdString();
@@ -39,12 +39,17 @@ void MainWindow::on_pushButton_clicked()
 
     delete model;
     model = new QStandardItemModel();
-    model->setHorizontalHeaderItem(0, new QStandardItem(("Operation")));
-    model->setHorizontalHeaderItem(1, new QStandardItem(("Cost")));
-    model->setHorizontalHeaderItem(2, new QStandardItem(("i")));
-    model->setHorizontalHeaderItem(3, new QStandardItem(("a after the operation")));
-    model->setHorizontalHeaderItem(4, new QStandardItem(("j")));
-    model->setHorizontalHeaderItem(5, new QStandardItem(("b after the operation")));
+    QString title[]={
+        "Operation",
+        "Cost",
+        "i",
+        "a after the operation",
+        "j",
+        "b after the operation"
+    };
+    for(int i=0; i<6; i++){
+        model->setHorizontalHeaderItem(i, new QStandardItem(title[i]));
+    }
 
     ui->tableView->setModel(model);
 
@@ -56,6 +61,8 @@ void MainWindow::on_pushButton_clicked()
         "TWIDDLE",
         "KILL   "
     };
+
+    //emulation
     int j=0, i=0;
     auto _=0u;
     for(; _<ops.size(); _++){
@@ -83,8 +90,6 @@ void MainWindow::on_pushButton_clicked()
             break;
         }
 
-
-
         model->setItem(_, 2, new QStandardItem(QString::number(i)));
         model->setItem(_, 3, new QStandardItem(QString::fromStdString(a.substr(0, i))));
         model->setItem(_, 4, new QStandardItem(QString::number(j)));
@@ -99,4 +104,19 @@ void MainWindow::on_pushButton_clicked()
     ui->tableView->resizeColumnsToContents();
     //end
 
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    update();
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    QApplication::exit();
+}
+
+void MainWindow::on_checkBox_clicked(bool checked)
+{
+    autoUpdate = checked;
 }
