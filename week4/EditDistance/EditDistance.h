@@ -76,18 +76,13 @@ public:
 
 				//i over b, j over a
 
-				d[i][j] = d[i][j-1] + w[INSERT];
-				o[i][j] = o[i][j-1]; o[i][j].push_back(INSERT);
-
+				update(i, j, i, j-1, INSERT, true);
 
 				if(b[i-1] == a[j-1]){
 					update(i, j, i-1, j-1, COPY);
 				}
 				if(j>=2 && i>=2 && (b[i-1]==a[j-2]) && (b[i-2]==a[j-1])){
 					update(i, j, i-2, j-2, TWIDDLE);
-				}
-				if(i==m){
-					update(i, j, i, j, KILL);
 				}
 
 				update(i, j, i-1, j-1, REPLACE);
@@ -96,9 +91,9 @@ public:
 			}
 		}
 	}
-	void update(int i, int j, int ii, int jj, Operation op){
+	void update(int i, int j, int ii, int jj, Operation op, bool force = false){
 		auto _ = d[ii][jj] + w[op];
-		if(_ < d[i][j] || d[i][j] < 0){
+		if(force || _ < d[i][j]){
 			d[i][j] = _;
 			o[i][j] = o[ii][jj]; 
 			o[i][j].push_back(op);
@@ -108,7 +103,19 @@ public:
 		return a<b? a: b;
 	}
 	Operations getOperations(){
-		return o[m][n];
+		auto _ = o[m][n];
+		int k = 0; //number of DELETE's to be replaced with a KILL
+
+		while(_.size() && *(_.end() - 1) == DELETE){
+			k += 1;
+			_.pop_back();
+		}
+		if(k && w[KILL] <= k*w[DELETE]){
+			_.push_back(KILL);
+			return _;
+		}else{
+			return o[m][n];
+		}
 	}
 	string getOperationsString(){
 		string txt[] = {

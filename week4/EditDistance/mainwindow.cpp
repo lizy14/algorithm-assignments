@@ -79,7 +79,7 @@ void MainWindow::on_pushButton_clicked()
             i += 2, j += 2;
             break;
         case KILL:
-            j = b.length()+1;
+            i = a.length()+1;
             break;
         }
 

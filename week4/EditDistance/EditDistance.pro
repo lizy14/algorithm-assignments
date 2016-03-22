@@ -8,13 +8,14 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = untitled1
+TARGET = EditDistance
 TEMPLATE = app
 
 
 SOURCES += GuiMain.cpp\
         mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    EditDistance.h
 
 FORMS    += mainwindow.ui
