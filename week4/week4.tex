@@ -1,0 +1,204 @@
+\input{header.tex}
+
+\usepackage{clrscode}
+
+\newcommand{\hmwkTitle}{Assignment\ \#4} % Assignment title
+\newcommand{\hmwkDueDate}{March\ 28,\ 2016} % Due date
+\newcommand{\hmwkClass}{Algorithms} % Course/class
+\newcommand{\hmwkAuthorName}{Zhaoyang Li (2014013432)} % Your name
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+
+\newpage
+\tableofcontents
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+
+\begin{homeworkProblem}
+
+CRLS Problems 15.5: Edit Distance.
+
+\problemAnswer{
+\subsection{Algorithm}
+Define $d_{i,j}$ as edit distance between prefix substrings x[1...i] and y[1...j]. A substructure can be described as follows:
+
+
+\begin{equation}
+d_{i,j}=\min
+\begin{cases}
+    d_{i,j-1}   + w_\mathrm{INSERT} & \\
+    \begin{cases}
+        d_{i-1, j-1} + w_\mathrm{COPY} & \text{if}\ a_{j} = b_{i}\\
+        \infty & \text{otherwise}\\
+    \end{cases}\\
+    \begin{cases}
+        d_{i-2, j-2} + w_\mathrm{TWIDDLE} & \text{if}\ b_{i-1}=a_{j-2}\ \text{and}\ b_{i-2}=a_{j-1}\\
+        \infty & \text{otherwise}\\
+    \end{cases}\\
+    d_{i-1, j}  + w_\mathrm{DELETE} & \\
+    d_{i-1,j-1}  + w_\mathrm{REPLACE} & \\
+\end{cases}
+\end{equation}
+
+The $\mathrm{KILL}$ operation is handled elsewhere, by counting number of successive $\mathrm{DELETE}$'s $n$ as suffix to the sequence of operations. If $n w_\mathrm{DELETE} \geq w_\mathrm{KILL}$, replace the $\mathrm{DELETE}$'s with a $\mathrm{KILL}$.
+}
+\problemAnswer{
+
+\subsection{Implementation}
+Implemented using bottom-up dynamic programming, in $\Theta(mn)$ time where $m,n$ are length of the two strings, in the C++ Programming Language, in the integrated development environment Visual Studio 2012, on the operating system Windows 10.
+
+Correctness is verified by: running against carefully designed test samples, such that the strings are short and the expected results are obvious; running against complicated input, and comparing my implementation's output with my roommate's.
+}
+\problemAnswer{
+
+\subsection{Testing via GUI}
+A graphic user-interface is built with Qt 5. Execute \url{bin/EditDistance.exe} to see the GUI. The sequence of operation to get minimal cost are shown in the form of table. A run-time screenshot is shown below.
+
+\includegraphics[width=0.75\columnwidth]{screenshot}
+}
+\problemAnswer{
+\subsection{As finding an optimal alignment}
+Set of operations
+$$\{\mathrm{COPY}, \mathrm{INSERT}, \mathrm{DELETE}, \mathrm{REPLACE}\}$$
+
+Corresponding costs
+$$\{-1, 1, 1, 2\}$$
+
+Placing a negative sign before the calculated edit distance gives us the score of optimal alignment.
+}
+
+\end{homeworkProblem}
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 2
+%----------------------------------------------------------------------------------------
+
+
+\begin{homeworkProblem}
+
+CRLS Exercises 16.2-6: Solve fractional knapsack problem in $O(n)$ time.
+
+\problemAnswer{
+To get $O(n)$ time complexity, we have to avoid sorting. Binary search came into my consideration.
+
+The algorithm can be described as follows:
+
+\begin{quote}
+0. Calculate $a_i=\frac{v_i}{w_i}, \forall i$.
+
+1. Find median of $\{a_i\}$, denoted as $m$.
+
+2. Create subsets $$G=\{i: a_i>m\}, E=\{i: a_i=m\}, L=\{i:a_i<m\}$$ Calculate $$W_G=\sum_{i\in G}w_i, W_E=\sum_{i\in E}w_i$$
+
+3. Compare $W_G, W_E$ with $W$.
+
+If $W_G>W$, do recursively on $G$;
+
+If $W_G\leq W$, take every item in $G$, and add $i\in E$ as much as possible. Once we have $W_G+W_G\geq W$, we are done;
+
+Do recursively on $L$ with $W' = W-W_G-W_E$.
+\end{quote}
+
+That's where we get pseudo-code, shown below.
+}
+
+
+\problemAnswer{
+\begin{codebox}
+\Procname{$\proc{Fractional-Knapsack-Problem-Aid(w, v, a, b, W)}$}
+\li WG = 0, WE = 0, let G, E, L be new arrays
+\li (m, n) = \proc{Find-Median}(a, b);
+\li \For i = 1 \To b.length
+\li    \Do
+            \If a[b[i]] $<$ m
+\li                \Then L.add(b[i])
+\li         \ElseIf a[b[i]]==m
+\li                \Then G.add(b[i]), WG += a[b[i]]
+\li         \ElseNoIf E.add(b[i]), WE += a[b[i]]
+    \End \End
+\li \If WG $>$ W
+\li \Then \Return \proc{Fractional-Knapsack-Problem-Aid}(w, v, a, G, W)
+    \End
+\li let R be a new array
+\li S = 0
+\li \For i = 1 \To G.length
+\li     \Do R.add((G[i], 1)); \End
+\li \For i = 1 \To E.length
+\li    \Do \If WG + a[E[i]] + S $leq$ W
+\li        \Then R.add((E[i], max((W - WG - a[E[i]] - S) / w[a[i]], 1)));
+\li    \ElseNoIf \Return R
+       \End
+    \End
+\li \Return R + \proc{Fractional-Knapsack-Problem-Aid}(w, v, a, L, W - WG - WE);
+\End
+\end{codebox}
+\begin{codebox}
+\Procname{$\proc{Fractional-Knapsack-Problem(n, w, v, W)}$}
+
+\li let a, b be new arrays
+\li \For i = 1 \To n
+\li \Do		a[i] = v[i] / w[i], b[i]=[i] \End
+\li \Return \proc{Fractional-Knapsack-Problem-Aid}(w, v, a, b, W)
+\end{codebox}
+}
+
+\problemAnswer{
+Let $T(n)$ be running time of problem sized $n$. Then
+$$T(n) = T(\frac{n}{2})+\Theta(n)$$
+
+Applying master theorem case 3,
+$$T(n) = \Theta(n)$$
+
+QED.
+}
+
+\end{homeworkProblem}
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 3
+%----------------------------------------------------------------------------------------
+
+
+\begin{homeworkProblem}
+
+CRLS Problems 16-2 Scheduling to minimize average completion time
+
+\problemAnswer{
+}
+
+\end{homeworkProblem}
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 4
+%----------------------------------------------------------------------------------------
+
+
+\begin{homeworkProblem}
+
+CRLS Problems 16-5 Off-line caching
+
+\problemAnswer{
+}
+
+\end{homeworkProblem}
+
+
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
