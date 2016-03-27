@@ -177,7 +177,99 @@ QED.
 
 CRLS Problems 16-2 Scheduling to minimize average completion time
 
+a.
+
+
 \problemAnswer{
+The algorithm can be described as follows:
+
+\begin{quote}
+0. Sort all the tasks by their processing time increasingly.
+
+1. Process the tasks in that order.
+\end{quote}
+
+Proof of correctness:
+
+Suppose we have a optimal scheduling $\{1, 2, 3, ..., n\}$, in which there exists tasks $i$ and $j$ such that $i<j$ and $p_i>p_j$.
+
+$$T=\sum_{k=1}^{n}c_k=\sum_{k=1}^{n}\sum_{m=1}^{k}p_m$$
+
+We may want to swap tasks $i$ and $j$, resulting in another scheduling
+
+$$\{1, 2, ..., i-1, j, i+1, ..., j-1, i, j+1, ..., n\}$$
+
+\begin{equation}
+\begin{aligned}
+T' & = \sum_{k=1}^{n}c'_k\\
+& =
+\sum_{k=1}^{i-1}\sum_{m=1}^{k}p_m
++ c'_j
++ \sum_{k=i+1}^{j-1}c'_{k}
++ c'_i
++ \sum_{k=j+1}^{n}\sum_{m=1}^{k}p_m\\
+& = \sum_{k=1}^{i-1}\sum_{m=1}^{k}p_m
++   \left( \sum_{k=1}^{i-1}p_k + p_j \right)
++ \sum_{k=i+1}^{j-1}\left(\sum_{q=1}^{i-1}p_q+p_j+\sum_{q=i+1}^{k}p_q\right)
++ \sum_{k=1}^{j}p_k
++ \sum_{k=j+1}^{n}\sum_{m=1}^{k}p_m\\
+\end{aligned}
+\end{equation}
+
+
+\begin{equation}
+\begin{aligned}
+T'-T & =
+  \left( \sum_{k=1}^{i-1}p_k + p_j \right)
++ \sum_{k=i+1}^{j-1}\left(\sum_{q=1}^{i-1}p_q+p_j+\sum_{q=i+1}^{k}p_q\right)
++ \sum_{k=1}^{j}p_k
+- \sum_{k=i}^{j}\sum_{m=1}^{k}p_m\\
+& <
+  \sum_{k=1}^{i}p_k
++ \sum_{k=i+1}^{j-1}\sum_{q=1}^{k}p_q
++ \sum_{k=1}^{j}p_k
+- \sum_{k=i}^{j}\sum_{m=1}^{k}p_m\\
+& =
+  \sum_{k=i+1}^{j-1}\sum_{q=1}^{k}p_q
+- \sum_{k=i+1}^{j-1}\sum_{m=1}^{k}p_m\\
+& =0\\
+\end{aligned}
+\end{equation}
+
+Now that $T' < T$, it's safe to say that there exists an optimal scheduling $\{1, 2, ..., n\}$ in which $\forall i<j, p_i<p_j$. QED.
+
+
+Time complexity:
+
+Running time $$T(n)=O(n \log n)$$ where $n$ is number of tasks.
+}
+
+b.
+
+\problemAnswer{
+We have to decide which task to run at every given time $t$.
+
+\begin{quote}
+0. $t=0, T=[]$.
+
+1. $t = t + 1$.
+
+2. Let $A=\{i: r_i\leq t\}$, which represents all the tasks available and unfinished at this moment.
+
+3. If $A=\emptyset$, done. The array $T$ represents the optimal scheduling.
+
+4. Search in $A$ for $i$ minimizing $p_i$. Let $T[t] = i$, meaning that process task $i$ at time $t$.
+
+5. Let $p_i = p_i - 1$, and go back to step 1.
+
+\end{quote}
+
+Proof of correctness:
+By contradiction. Swapping tasks, similar to proof of a.
+
+
+Time complexity:
+Running time $T(n)=O(n^2)$, where $n$ is number of tasks.
 }
 
 \end{homeworkProblem}
@@ -192,7 +284,52 @@ CRLS Problems 16-2 Scheduling to minimize average completion time
 
 CRLS Problems 16-5 Off-line caching
 
+a.
+
 \problemAnswer{
+
+\begin{codebox}
+\Procname{$\proc{Furthest-In-Future}(r,k)$}
+\li let $E$ be new array
+\li let $C$ be new array
+\li $C[1...k] = r[1...k]$
+\li \For $j = k+1$ \To $n$
+\li     \Do let $R$ be new array
+\li     \For $i = 1$ \To $k$
+\li         \Do \If $C[i] = r[j]$
+\li         \Then $E[j]=$\const{nil}
+            \End
+        \End
+\li     \For $c = 1$ \To $k$
+\li         \Do $E[c]=\infty$
+\li         \For $i = j+1$ \To $r$.length
+\li             \Do \If $C[c]=r[i]$
+\li             \Then $E[i]=$min$(E[i], i)$ \End
+           \End
+        \End
+\li     $m = \infty$
+\li     \For $c = 1$ \To $k$
+\li         \Do \If $E[c] < m$
+\li         \Then $m = E[c]\End$
+        \End
+\li     E.add(C[m])
+    \End
+\li \Return E;
+\End
+\end{codebox}
+Running time $T(n)=O(n^2k)$.
+}
+
+b. 
+
+\problemAnswer{
+
+}
+
+c.
+
+\problemAnswer{
+
 }
 
 \end{homeworkProblem}
