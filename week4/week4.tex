@@ -284,6 +284,9 @@ Running time $T(n)=O(n^2)$, where $n$ is number of tasks.
 
 CRLS Problems 16-5 Off-line caching
 
+% WARNING for possible readers:
+% I myself don't know what I am writing below. So don't spend time on my piece of work.
+
 a.
 
 \problemAnswer{
@@ -320,16 +323,28 @@ a.
 Running time $T(n)=O(n^2k)$.
 }
 
-b. 
+b.
 
 \problemAnswer{
+An optimal substructure:
+
+Let $A(k)$ be the minimal number of cache misses, upon subsequence of requests $r[1..k]$. Then $A(k-1)$ should be the minimal number of cache misses upon subsequence of requests $r[1..(k-1)]$.
+
+If not so, we may replace cache management strategy upon requests $r[1..(k-1)]$ in $A(k)$ with that in $A(k-1)$, which gives a strategy with fewer cache misses, contradicting to the assumption that $A(k)$ is minimal.
 
 }
 
 c.
 
 \problemAnswer{
-
+\begin{equation}
+A(k)=
+    \begin{cases}
+        A(k-1) + 1 & \text{if}\ r[k]\ \text{is not in cache}\\
+        A(k-1) & \text{otherwise}\\
+    \end{cases}\\
+\end{equation}
+Suppose we have a cache management strategy $A'$ that does not choose as the furthest-in-future one $A$ does, upon request $r[i]$: it chooses $r[j]=a$ instead of the furthest-in-future one $r[k]=b$. Number of cache misses upon requests $r[(i+1)...k]$ $A'(k)-A'(i)\geq A(k)-A(i)$. $A(k)\leq A'(k)$. So $A'$ is not optimal. QED.
 }
 
 \end{homeworkProblem}
