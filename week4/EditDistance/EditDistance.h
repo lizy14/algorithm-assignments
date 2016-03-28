@@ -75,7 +75,7 @@ public:
 			for(int i=1; i<=m; i++){
 
 				//i over b, j over a
-
+				
 				update(i, j, i, j-1, INSERT, true);
 
 				if(b[i-1] == a[j-1]){
@@ -87,7 +87,6 @@ public:
 
 				update(i, j, i-1, j-1, REPLACE);
 				update(i, j, i-1, j, DELETE);
-				
 			}
 		}
 	}
@@ -112,7 +111,7 @@ public:
 		}
 		if(k && w[KILL] <= k*w[DELETE]){
 			_.push_back(KILL);
-			return _;
+            return _;
 		}else{
 			return o[m][n];
 		}
@@ -128,10 +127,11 @@ public:
 		};
 		string r = "Operations: \n";
 		auto ops = getOperations();
-		for(auto op : ops){
-			r += (txt[op]);
-			r += "\n";
-		}
+		if(ops.size())
+			for(auto op : ops){
+				r += (txt[op]);
+				r += "\n";
+			}
 		return r;
 	}
 	Cost getCost(){

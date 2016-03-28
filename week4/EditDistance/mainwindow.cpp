@@ -96,6 +96,15 @@ void MainWindow::update(){
         model->setItem(_, 5, new QStandardItem(QString::fromStdString(b.substr(0, j))));
 
     }
+    if(i<a.size()){
+        model->setItem(_, 0, new QStandardItem("KILL"));
+        model->setItem(_, 1, new QStandardItem(QString::number((int)c[KILL])));
+        model->setItem(_, 2, new QStandardItem(QString::number(a.size())));
+        model->setItem(_, 3, new QStandardItem(QString::fromStdString(a)));
+        model->setItem(_, 4, new QStandardItem(QString::number(b.size())));
+        model->setItem(_, 5, new QStandardItem(QString::fromStdString(b)));
+        _++;
+    }
     model->setItem(_, 0, new QStandardItem(QString("Total")));
     model->setItem(_, 1, new QStandardItem(QString::number(cost)));
     model->setItem(_, 3, new QStandardItem(QString::fromStdString(a)));

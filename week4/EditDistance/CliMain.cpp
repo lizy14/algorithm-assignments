@@ -5,8 +5,8 @@ int main(){
 	//string a = "edit";
 	//string b = "distance";
 
-	string a = "abcdefg";
-	string b = "ab";
+	string a = "appletree";
+	string b = "a";
 	Costs c;
 	c[COPY] = 1;
 	c[KILL] = 2;
