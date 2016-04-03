@@ -1,7 +1,7 @@
 \input{header.tex}
 
 \usepackage{clrscode}
-
+\usepackage{enumerate}
 \newcommand{\hmwkTitle}{Assignment\ \#5} % Assignment title
 \newcommand{\hmwkDueDate}{April\ 4,\ 2016} % Due date
 \newcommand{\hmwkClass}{Algorithms} % Course/class
@@ -46,18 +46,20 @@ Read CRLS chapters 12, 13 and 18.
 
 CRLS Exercises 17.4-3.
 
+
 \problemAnswer{
+
 Let $c_i$ be actual cost of deletion operation $i$, and $\hat{c_i}$ be the corresponding amortized one. Let $n_{i-1}, s_{i-1}, n_i, s_i$ be number of elements in the table and size of the table, before and after the deletion, respectively.
 
 When a deletion happens without resizing,
 
 $$
-s_i = s_{i-1}, 
-n_i = n_{i-1} - 1, 
-n_i p\geq \frac13 s_{i-1}, 
+s_i = s_{i-1},
+n_i = n_{i-1} - 1,
+n_i p\geq \frac13 s_{i-1},
 $$
 
-Therefore 
+Therefore
 
 \begin{equation}
 \begin{aligned}
@@ -72,13 +74,13 @@ Therefore
 When a resizing happens, we have
 
 $$
-s_i = \lfloor\frac23 s_{i-1}\rfloor, 
-n_i = n_{i-1} - 1, 
-n_{i-1} \geq\frac13 s_{i-1}, 
+s_i = \lfloor\frac23 s_{i-1}\rfloor,
+n_i = n_{i-1} - 1,
+n_{i-1} \geq\frac13 s_{i-1},
 n_{i} < \frac13 s_{i-1}
 $$
 
-Therefore 
+Therefore
 \begin{equation}
 \begin{aligned}
 \hat{c_i}&=c_i+\Phi_i-\Phi_{i-1} \\
@@ -106,11 +108,68 @@ QED.
 \begin{homeworkProblem}
 
 CRLS Problems 17-2.
+Making binary search dynamic.
+
+a.
 
 \problemAnswer{
+To search, perform standard binary search on each of the $k$ sorted arrays.
 
+Worst-case running time
+\begin{equation}
+\begin{aligned}
+T(n)
+& \leq\sum_{i=0}^{k-1}O(\lg{2^i}) \\
+& =\sum_{i=0}^{k-1}O(i) \\
+& =O\left(\sum_{i=0}^{k-1}i\right) \\
+& =O\left(k^2\right) \\
+& =O\left(\lceil\lg(n+1)\rceil^2\right)\\
+& =O\left(\lg^2n\right)
+\end{aligned}
+\end{equation}
 }
 
+b.
+
+\problemAnswer{
+To insert an element $e$, 
+\begin{quote}
+\begin{enumerate}[Step 1.]
+\item Find the max $j$ such that $\forall i\ s.t\ 0\leq i<j, n_i = 1$ and $n_j=0$. If such $j$ does not exist, we say $j=0$.
+\item Let $A_j=\bigcup_{i=0}^{j-1}A_{i}$. 
+\item Insert $e$ into $A_j$.
+\item For all $i$ such that $0\leq i < j$, let $A_{i}=\langle\rangle, n_i=0$.
+\item Let $n_j = 1, n = n+1$. Done.
+\end{enumerate}
+\end{quote}
+
+Timing:\\ \\ 
+Steps 1, 6 take $O(1)$ time. Step 3 takes time linear to length of $A_j$, which is $O(2^j)$. Step 4 takes $O(j)$. Step 2 involves merging sorted arrays and can be done in $O(2^j)$ time. The total is $O(2^j)$.
+\\ \\ 
+In the worst case, $j=k-1$, meaning $n=2^k-1$. Running time $O(2^j)=O(2^k)=O(2^{\lg n}) = O(n)$.
+\\ \\ 
+During $m$ insertion operations, noticing the nature of binary increment, in $\frac m2$ cases we have $j=0$, in $\frac m4$ for $j=1$, $\frac m8$ for $j=2$... In a word, we know the distribution of $j$.
+
+$$T_m
+\leq\sum_{i=0}^{k-1}\frac{m}{2^i} O(\lg{2^{i+1}}) 
+\leq\sum_{i=0}^{k-1}m O(1)
+=mO(k)
+=mO(\lg n)$$
+
+Applying aggregate analysis, amortized running time for each operation 
+
+
+
+$$T = \frac{m O(\lg n)}{m} = O(\lg n)$$
+}
+
+c.
+
+\problemAnswer{
+To perform a deletion of element $e$, we first perform a search to find $i$ s.t. $e\in A_i$. Remove $e$ from $A_i$. 
+
+Also, we find the minimal $j$ s.t. $A_j\neq \langle\rangle$. Take an element $a\in A_j$ randomly and insert it into $A_i$. Now forget about $A_i$ and look at $A_j$, whose length is $2^j-1$. We divide $A_j$ into arrays $A_0, A_1, ..., A_{j-1}$ who have a total capacity of $2^j-1$ and are by now empty. Done.
+}
 \end{homeworkProblem}
 
 
@@ -121,7 +180,7 @@ CRLS Problems 17-2.
 
 \begin{homeworkProblem}
 
-CRLS Problems 19-3.
+CRLS Problems 19-3. More Fibonacci-heap operations.
 
 \problemAnswer{
 
