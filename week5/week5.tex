@@ -32,7 +32,6 @@
 Read CRLS chapters 12, 13 and 18.
 
 \problemAnswer{
-
 }
 
 \end{homeworkProblem}
@@ -48,7 +47,53 @@ Read CRLS chapters 12, 13 and 18.
 CRLS Exercises 17.4-3.
 
 \problemAnswer{
+Let $c_i$ be actual cost of deletion operation $i$, and $\hat{c_i}$ be the corresponding amortized one. Let $n_{i-1}, s_{i-1}, n_i, s_i$ be number of elements in the table and size of the table, before and after the deletion, respectively.
 
+When a deletion happens without resizing,
+
+$$
+s_i = s_{i-1}, 
+n_i = n_{i-1} - 1, 
+n_i p\geq \frac13 s_{i-1}, 
+$$
+
+Therefore 
+
+\begin{equation}
+\begin{aligned}
+\hat{c_i}&=c_i+\Phi_i-\Phi_{i-1} \\
+&=1+|2 n_i - s_i| - |2 n_{i-1} - s_{i-1}| \\
+&\leq1+|\left(2 \left(n_{i-1}-1\right) - s_{i-1}\right) - \left(2 n_{i-1} - s_{i-1}\right)| \\
+&=1+2\\
+&=3.
+\end{aligned}
+\end{equation}
+
+When a resizing happens, we have
+
+$$
+s_i = \lfloor\frac23 s_{i-1}\rfloor, 
+n_i = n_{i-1} - 1, 
+n_{i-1} \geq\frac13 s_{i-1}, 
+n_{i} < \frac13 s_{i-1}
+$$
+
+Therefore 
+\begin{equation}
+\begin{aligned}
+\hat{c_i}&=c_i+\Phi_i-\Phi_{i-1} \\
+&=\left(n_i+1\right) +|2 n_i - s_i| - |2 n_{i-1} - s_{i-1}| \\
+&=\left(n_i+1\right) + |s_i - 2 n_i| -\left(-2 n_{i-1} + s_{i-1}\right)\\
+&\leq\left(n_i+1\right) + 2 - n_i \\
+&=3.
+\end{aligned}
+\end{equation}
+
+Therefore
+
+$$\hat{c_i}=O(1)$$
+
+QED.
 }
 
 \end{homeworkProblem}
