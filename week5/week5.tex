@@ -29,7 +29,7 @@
 
 \begin{homeworkProblem}
 
-Read CRLS chapters 12, 13 and 18.
+Read CLRS chapters 12, 13 and 18.
 
 \problemAnswer{
 }
@@ -44,7 +44,7 @@ Read CRLS chapters 12, 13 and 18.
 
 \begin{homeworkProblem}
 
-CRLS Exercises 17.4-3.
+CLRS Exercises 17.4-3.
 
 
 \problemAnswer{
@@ -107,7 +107,7 @@ QED.
 
 \begin{homeworkProblem}
 
-CRLS Problems 17-2.
+CLRS Problems 17-2.
 Making binary search dynamic.
 
 a.
@@ -180,12 +180,31 @@ Also, we find the minimal $j$ s.t. $A_j\neq \langle\rangle$. Take an element $a\
 
 \begin{homeworkProblem}
 
-CRLS Problems 19-3. More Fibonacci-heap operations.
+CLRS Problems 19-3. More Fibonacci-heap operations.
+
+a.
 
 \problemAnswer{
+If $k < x.key$, we call \proc{Fib-Heap-Decrease-Key}$(H, x, k)$, amortized cost of which is O(1).
 
+If $k = x.key$, we do nothing and return, with $O(1)$ time consumption.
+
+
+If $k > x.key$, call \proc{Cut}$(H, y, y.p)$ for each child of $x$ such that $y.p = x$. Then let $x.key = k$, call \proc{Cut}$(H, x, x.p)$. Done. Since $\forall z \in H, z.degree=O(\lg n)$, we have the amortized cost $O(\lg n)$.
 }
 
+b.
+
+\problemAnswer{
+Delete leaves only. We may want to keep track of all the leaves, so that deletion of a single leaf takes $O(1)$ time.
+
+Let $\Phi(D_i)=t(H) + m(H)$.
+
+$\hat{c_i} = c_i +  \Phi(D_i) - \Phi(D_{i-1})
+= q O(1) - q
+= O(q)
+$.
+}
 \end{homeworkProblem}
 
 
