@@ -1,8 +1,7 @@
 //ref: http://www-igm.univ-mlv.fr/~lecroq/string/node8.html
 
+#include "matching.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 void preKmp(char *x, int m, int kmpNext[]) {
 	int i, j;
 
@@ -21,8 +20,8 @@ void preKmp(char *x, int m, int kmpNext[]) {
 }
 
 
-void KMP(char *x, int m, char *y, int n) {
-	printf("KMP ");
+result KMP(char *x, int m, char *y, int n) {
+	result r;
 	int i, j;
 	int* kmpNext = (int*)malloc(m*sizeof(int));
 
@@ -37,9 +36,9 @@ void KMP(char *x, int m, char *y, int n) {
 		i++;
 		j++;
 		if (i >= m) {
-			printf("%d\t",(j - i));
+			r.push_back(j - i);
 			i = kmpNext[i];
 		}
 	}
-	putchar('\n');
+	return r;
 }

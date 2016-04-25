@@ -81,7 +81,7 @@
     <ClCompile Include="BF.cpp" />
     <ClCompile Include="BM.cpp" />
     <ClCompile Include="KMP.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="CliMain.cpp" />
     <ClCompile Include="timing.cpp" />
   </ItemGroup>
   <ItemGroup>

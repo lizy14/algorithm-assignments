@@ -1,10 +1,10 @@
 //ref: http://www-igm.univ-mlv.fr/~lecroq/string/node14.html
 
+#include "matching.h"
 #define ASIZE 256
 
 #define MAX(x, y) ((x)>(y)?(x):(y))
-#include <stdlib.h>
-#include <stdio.h>
+
 void preBmBc(char *x, int m, int bmBc[]) {
 	int i;
 
@@ -53,8 +53,8 @@ void preBmGs(char *x, int m, int bmGs[]) {
 }
 
 
-void BM(char *x, int m, char *y, int n) {
-	printf("BM  ");
+result BM(char *x, int m, char *y, int n) {
+	result r;
 	int i, j;
 	int* bmGs = (int*)malloc(m*sizeof(int));
 	int bmBc[ASIZE];
@@ -68,11 +68,16 @@ void BM(char *x, int m, char *y, int n) {
 	while (j <= n - m) {
 		for (i = m - 1; i >= 0 && x[i] == y[i + j]; --i);
 		if (i < 0) {
-			printf("%d\t",j);
+			r.push_back(j);
 			j += bmGs[0];
 		}
-		else
-			j += MAX(bmGs[i], bmBc[y[i + j]] - m + 1 + i);
+        else{
+            int _ = y[i + j];
+            if(_>=256 || _<0)
+                _ = 0;
+            j += MAX(bmGs[i], bmBc[_] - m + 1 + i);
+        }
 	}
-	putchar('\n');
+	return r;
+
 }
