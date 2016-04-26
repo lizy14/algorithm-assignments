@@ -29,7 +29,7 @@
 
 \begin{homeworkProblem}
 
-CLRS Exercises 35.3-2, 
+CLRS Exercises 35.3-2,
 Show that the decision version of the set-covering problem is NP-complete by reducing it from the vertex-cover problem.
 
 \problemAnswer{
@@ -46,7 +46,7 @@ Show that the decision version of the set-covering problem is NP-complete by red
 
 \begin{homeworkProblem}
 
-CLRS Exercises 35.3-3, 
+CLRS Exercises 35.3-3,
 
 Show how to implement \proc{GREEDY-SET-COVER} in such a way that it runs in time $O\left(\sum_{S\in \mathcal{F}}|S|\right)$
 
@@ -81,8 +81,37 @@ Saving temporary space in matrix multiplication
 
 Implement multithreading versions of merge sort and quick sort on OpenMP.
 
-\problemAnswer{
-}
+\subsection{Implementation and environment}
+\paragraph{Language} The C++ programming language
+\paragraph{IDE} Visual Studio 2015
+\paragraph{Compiling} MSVC2015 64bit Debug\footnote{Release with optimization disabled gives similar results.} with OpenMP support
+\paragraph{OS} Windows 10 Education, Build 10586
+\paragraph{Hardware} Intel Core i7-6600U @ 2.60GHz (2 Cores), 16GB LPDDR3, ThinkPad X1 Carbon 20FB
+
+\subsection{Verification of correctness}
+
+Correctness is verified by comparing results given respectively by the algorithms, on randomly generated arrays. 100\% correctness.
+
+\subsection{Timing}
+Each number in the table below is an average over several different randomly generated arrays.
+\begin{center}
+\begin{tabular}{rrrrrr}
+\hline
+milliseconds&   Quick Single&	Quick Naive Multi&	Merge Single&	Merge Naive Multi&	Merge Multi\\
+\hline
+Array size 1e6&	1.90E+07&	1.35E+07&	4.16E+07&	3.29E+07&	2.09E+07\\
+Array size 1e3& 	5081.22&	3929.41&	29941.2&	23651.2&	10828\\
+\hline
+\end{tabular}
+\end{center}
+
+Illustrated as follows.
+
+\includegraphics[width=1\columnwidth]{sort}
+
+It can be concluded that multi-threading merge sort saves about 50\% of the running time, as is expected on a 2-core CPU. Naive multi-threading algorithms save 20\% to 30\%.
+
+
 \end{homeworkProblem}
 
 
@@ -97,8 +126,47 @@ Implement multithreading versions of merge sort and quick sort on OpenMP.
 
 Implement multithreading versions of matrix multiplication on OpenCL or CUDA.
 
-\problemAnswer{
-}
+\subsection{Implementation and environment}
+\paragraph{Language} The C++ programming language, the OpenCL platform
+\paragraph{IDE} Visual Studio 2015
+\paragraph{Compiling} MSVC2015 64bit Release, Intel SDK for OpenCL Applications 6.0
+\paragraph{OS} Windows 10 Education, Build 10586
+\paragraph{Hardware} Intel Core i7-6600U @ 2.60GHz (GPU Intel HD Graphics 530), 16GB LPDDR3, ThinkPad X1 Carbon 20FB
+
+
+\subsection{Timing}
+Each number in the table below is an average over several different randomly generated matrices.
+\begin{center}
+\begin{tabular}{rrr}
+\hline
+size& CPU/us& GPU/us\\
+\hline
+1& 	0.02& 	915.825378\\\\
+2& 	0.05& 	867.252197\\
+4& 	0.32& 	1014.651611\\
+8& 	2.29& 	1159.98291\\
+16& 	13.44& 	1057.659912\\
+32& 	94& 	891.381287\\
+64& 	850& 	938.103577\\
+128& 	6000& 	1313.00354\\
+256& 	52000& 	1707.822388\\
+512& 	427000& 	5865.757813\\
+1024& 	3.28E+06& 	36941.33203\\
+2048& 	2.76E+07& 	236610.8594\\
+4096& 	& 	1075285.25\\
+8192& 	& 	7530680.5\\
+\hline
+\end{tabular}
+\end{center}
+
+Illustrated as follows.
+
+\includegraphics[width=.75\columnwidth]{matrix}
+
+It can be concluded that for large matrices, GPU calculation is about 100 times faster. As the two lines on the log-log plot looks parallel with each other, we know that growth rate of running time on CPU and GPU are basically the same, which is $\Theta(n^3)$.
+
+It's not expected that for small matrices, GPU has a fixed running time, regardless of the exact size of the matrix. I didn't look into details; a reasonable guessing is that time spent on scheduling outweighs.
+
 \end{homeworkProblem}
 
 %----------------------------------------------------------------------------------------
