@@ -21,10 +21,12 @@ Timing::Timing():divisor(1)
 void Timing::start()
 {
 	clockStart = clock();
+	wallStart = std::chrono::system_clock::now();
 }//end function
 void Timing::end()
 {
 	clockEnd = clock();
+	wallEnd = std::chrono::system_clock::now();
 }//end function
 
 void Timing::reportCPUtime()
@@ -42,4 +44,22 @@ double Timing::getCPUtime()
 {
 	clock_t timeDelta = clockEnd - clockStart;
 	return (double)timeDelta * (1000000 / CLOCKS_PER_SEC) / divisor;
+}//end function
+
+
+void Timing::reportWallTime()
+{
+	std::chrono::duration<double> elapsed_seconds = wallEnd - wallStart;
+	if (divisor == 1) {
+	}
+	else {
+		cout << "运行了 " << divisor << " 次，平均每次";
+	}
+	cout << "所用墙上时钟时间 " << elapsed_seconds.count() << " 秒。" << endl;
+}//end function
+
+double Timing::getWallTime()
+{
+	std::chrono::duration<double> elapsed_seconds = wallEnd - wallStart;
+	return 1e6*elapsed_seconds.count();
 }//end function

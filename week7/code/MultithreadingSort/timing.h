@@ -18,10 +18,12 @@
 #ifndef TIMING_H
 #define TIMING_H
 #include <ctime>
+#include <chrono>
 
 #define TIMING_INIT \
 	{\
 		double time = 0;\
+		double wallTime = 0;\
 		int times = 0;\
 		while (time < 1e6) {\
 			Timing timer;
@@ -33,9 +35,11 @@
 			timer.end();\
 			times++;\
 			time += timer.getCPUtime();\
+			wallTime += timer.getWallTime();\
 		}\
 		time /= times;\
-		cout << time << " us\n";\
+		cout << time << " us\t";\
+		cout << wallTime << " s\n";\
 	}
 /*
 usage of macros:
@@ -56,6 +60,7 @@ class Timing
 {
 private:
 	clock_t clockStart, clockEnd;
+	std::chrono::time_point<std::chrono::system_clock> wallStart, wallEnd;
 	int divisor; 
 
 public:
@@ -67,6 +72,8 @@ public:
 	void end();
 	void reportCPUtime(); 
 	double getCPUtime(); 
+	void reportWallTime();
+	double getWallTime();
 	void setDivisor(int t) {divisor=t;}
 }; //end of class
 

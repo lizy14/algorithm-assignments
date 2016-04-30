@@ -33,8 +33,27 @@ CLRS Exercises 35.3-2,
 Show that the decision version of the set-covering problem is NP-complete by reducing it from the vertex-cover problem.
 
 \problemAnswer{
+\paragraph{Part I} \proc{Set-Covering} $\in$ NP.
+
+Trivially, for an given instance $(X,\mathcal{F},k)$ and its solution $S$, we can check if $S$ is a subset of $\mathcal{F}$ consisting of less than $k$ subsets of $X$, and whether $S$ covers $X$, in polynomial time.
 
 
+\paragraph{Part II} Conversion
+
+Given an instance of \proc{Vertex-Covering}, say $(V,E,j)$. Let $X=E, k=j$. For all vertexes $v_i\in V$, construct $E\supseteq E_i = \{e\in E: \exists v_j\in V s.t. (v_j, v_i) = e\}$. Let $\mathcal{F}=\{E_i\}$. Since $\mathcal{F}$ consists of subsets of $E$, the converted instance of \proc{Set-Covering} is valid. Such construction can be done in polynomial time.
+
+
+\paragraph{PART III} Proof of correctness
+
+(a) An instance of \proc{Vertex-Covering} is accepted \textbf{if} it's converted instance of \proc{Set-Covering} is accepted.
+
+Suppose we have a solution $S$ to $(X,\mathcal(F),k)$, which covers $X$. $\forall S_i\in S$, there is a corresponding $v_i\in V$. Let the corresponding $v_i$'s form a set $V'$. We know that $|S|=|V'|=k=j$. Since $S$ covers $X$, it's obvious that $V'$ covers $(V,E)$.
+
+(b) An instance of \proc{Vertex-Covering} is accepted \textbf{only if} it's converted instance of \proc{Set-Covering} is accepted.
+
+Suppose we have a solution $S$ to $(V,E,j)$. There exists a corresponding $C\subseteq 2^E$ for each $v\in S$. Since $j=k$, $|C|\leq k$. $\forall x\in X$, it corresponds to an $e\in E$. Since $X$ is covered, $E$ is covered.
+
+\paragraph{In conclusion,} \proc{Set-Covering}  $\leq_P$ \proc{Vertex-Covering}, and \proc{Set-Covering} $\in$ NP. Thus, \proc{Set-Covering} $\in$ NP-Complete.
 }
 \end{homeworkProblem}
 
@@ -48,10 +67,29 @@ Show that the decision version of the set-covering problem is NP-complete by red
 
 CLRS Exercises 35.3-3,
 
-Show how to implement \proc{GREEDY-SET-COVER} in such a way that it runs in time $O\left(\sum_{S\in \mathcal{F}}|S|\right)$
+Show how to implement \proc{Greedy-Set-Cover} in such a way that it runs in time $O\left(\sum_{S\in \mathcal{F}}|S|\right)$
 
 
 \problemAnswer{
+As far as I can see, to get such a low time complexity, we have to perform some space-time tradeoff, meaning that we need some spacial data structure.
+
+Let's maintain an table $T_1$ of all the elements $S_i\in\mathcal{F}$, keeping them sorted by a $s_i=|\{x\in S_i : \text{not covered yet}\}|$.
+
+Each time, we choose $S_j\in\mathcal{F}$ from $T_1$ with the maximum $s_j$, update all the $s_i$'s in $T_1$ (where "update" is always "decrease"), and repeat until $\forall j, s_j=0$.
+
+$T_1$ is supposed to support \proc{Decrease-Key} and \proc{Find-Max} efficiently. I believe we can find some data structure to meet the requirements. Heaps, for instance.
+
+Now, in order to update our $s_i$'s efficiently, we have to keep track of all $x_k\in X$: we need to know all the $S_i$'s $x_k$ is in, all the $s_i$'s in which $x_k$ counted. That requires tables mapping from $k$ to lists of $S_i$. In order to make locating quicker, we may want to add more internal links between all the tables.
+
+Now let's describe our algorithm informally:
+
+\begin{itemize}
+\item Create $T_1$ mapping from $i$ to decreasingly-sorted integers, initially $|S_i|$. Create $T_2$ mapping from $i$ to $\{j:x_i\in S_j\}$. Let $C=\emptyset$.
+
+\item Repeat until $\forall j, T_2(j)=0$: choose the maximum item in $T_1$ as $t$. Let $C=C\cup\{t\}$. For all $ x \in t$, for all $y\in T_2(x)$, $T_2(x)=T_2(x)\setminus\{y\}$, decrease the corresponding $T_1(y)$.
+
+\item Return with $C$.
+\end{itemize}
 }
 \end{homeworkProblem}
 
@@ -67,6 +105,25 @@ CLRS Problems 27-2,
 Saving temporary space in matrix multiplication
 
 \problemAnswer{
+\subsection{a}
+Modifications on the original \proc{P-Matrix-Multiply-Recursive} are listed as follows.
+
+\begin{itemize}
+\item add an initialization $\forall i, j, c_{ij} = 0$ outside, in parallel, in $\Theta(\lg n)$
+\item add a \textbf{sync} statement after the 4th \textbf{spawn}
+\item modify line 3 into $c_{11} = c_{11} + a_{11} \cdot b_{11}$
+\end{itemize}
+
+$T_\infty(n) = 2 T_\infty(n / 2) + \Theta(\lg n) = \Theta(n)$
+
+\subsection{b}
+Work: $T_1 = \Theta(n^3)$.
+Span: $T_\infty = \Theta(n)$.
+
+\subsection{c}
+Parallelism: $T_1 / T_\infty = \Theta(n^2) = 1000^2 = 10^6$.
+
+Though it's 10 times less than the original, since most parallel computers still have far fewer than 1 million processors, it's reasonable to conclude that there is no significant difference.
 }
 \end{homeworkProblem}
 
@@ -79,14 +136,14 @@ Saving temporary space in matrix multiplication
 
 \begin{homeworkProblem}
 
-Implement multithreading versions of merge sort and quick sort on OpenMP.
+Implement multithreading versions of merge sort and quick sort with OpenMP.
 
 \subsection{Implementation and environment}
 \paragraph{Language} The C++ programming language
 \paragraph{IDE} Visual Studio 2015
 \paragraph{Compiling} MSVC2015 64bit Debug\footnote{Release with optimization disabled gives similar results.} with OpenMP support
 \paragraph{OS} Windows 10 Education, Build 10586
-\paragraph{Hardware} Intel Core i7-6600U @ 2.60GHz (2 Cores), 16GB LPDDR3, ThinkPad X1 Carbon 20FB
+\paragraph{Hardware} Intel Core i7-6600U @ 2.60GHz (2 Cores), RAM 16GB LPDDR3, Model ThinkPad X1 Carbon 20FB
 
 \subsection{Verification of correctness}
 
@@ -124,15 +181,18 @@ It can be concluded that multi-threading merge sort saves about 50\% of the runn
 
 \begin{homeworkProblem}
 
-Implement multithreading versions of matrix multiplication on OpenCL or CUDA.
+Implement GPU version of matrix multiplication with OpenCL or CUDA.
 
 \subsection{Implementation and environment}
-\paragraph{Language} The C++ programming language, the OpenCL platform
+\paragraph{Language} The C++ programming language and the OpenCL C Language
 \paragraph{IDE} Visual Studio 2015
 \paragraph{Compiling} MSVC2015 64bit Release, Intel SDK for OpenCL Applications 6.0
 \paragraph{OS} Windows 10 Education, Build 10586
-\paragraph{Hardware} Intel Core i7-6600U @ 2.60GHz (GPU Intel HD Graphics 530), 16GB LPDDR3, ThinkPad X1 Carbon 20FB
+\paragraph{Hardware} Intel Core i7-6600U @ 2.60GHz, GPU Intel HD Graphics 530, RAM 16GB LPDDR3, Model ThinkPad X1 Carbon 20FB
 
+\subsection{Verification of correctness}
+
+Correctness is verified by comparing results given respectively by the two implementations, on randomly generated matrices. 100\% correctness.
 
 \subsection{Timing}
 Each number in the table below is an average over several different randomly generated matrices.
@@ -141,7 +201,7 @@ Each number in the table below is an average over several different randomly gen
 \hline
 size& CPU/us& GPU/us\\
 \hline
-1& 	0.02& 	915.825378\\\\
+1& 	0.02& 	915.825378\\
 2& 	0.05& 	867.252197\\
 4& 	0.32& 	1014.651611\\
 8& 	2.29& 	1159.98291\\
@@ -165,10 +225,11 @@ Illustrated as follows.
 
 It can be concluded that for large matrices, GPU calculation is about 100 times faster. As the two lines on the log-log plot looks parallel with each other, we know that growth rate of running time on CPU and GPU are basically the same, which is $\Theta(n^3)$.
 
-It's not expected that for small matrices, GPU has a fixed running time, regardless of the exact size of the matrix. I didn't look into details; a reasonable guessing is that time spent on scheduling outweighs.
+It's not expected that for small matrices, GPU has a fixed running time, regardless of the exact size of the matrix. I didn't look into details; a reasonable guess is that time spent on scheduling outweighs.
 
 \end{homeworkProblem}
 
+(End of all.)
 %----------------------------------------------------------------------------------------
 
 \end{document}

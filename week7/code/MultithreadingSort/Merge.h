@@ -119,9 +119,9 @@ void p_merge(vector<int>& T, int p1, int r1, int p2, int r2, vector<int>& A, int
 #pragma omp parallel for num_threads(2)
 		for (int i = 0; i < 2; i++) {
 			if (i == 0)
-				p_merge(T, q1 + 1, r1, q2, r2, A, q3 + 1);
+				merge(T, q1 + 1, r1, q2, r2, A, q3 + 1);
 			else
-				p_merge(T, p1, q1 - 1, p2, q2 - 1, A, p3);
+				merge(T, p1, q1 - 1, p2, q2 - 1, A, p3);
 		}
 #endif
 #ifdef CPP11
@@ -145,9 +145,9 @@ void p_merge_sort(vector<int>& A, int p, int r, vector<int>& B, int s) {
 #pragma omp parallel for num_threads(2)
 		for (int i = 0;i < 2; i++) {
 			if (i == 0)
-				p_merge_sort(A, q + 1, r, T, q_ + 1);
+				merge_sort(A, q + 1, r, T, q_ + 1);
 			else
-				p_merge_sort(A, p, q, T, 1);
+				merge_sort(A, p, q, T, 1);
 		}
 #endif
 #ifdef CPP11
